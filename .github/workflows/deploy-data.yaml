@@ -6,25 +6,26 @@ on:
   push:
     branches:
       - 'dist'
+  workflow_dispatch:
 
 jobs:
   fetch_and_commit:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-      with:
-        ref: dist
-        fetch-depth: 0
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          ref: dist
+          fetch-depth: 0
 
-    - name: Fetch JSON
-      run: |
-        curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SIVR&apikey=${{ secrets.alphaVantage_apikey }}
-        curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGOL&apikey=${{ secrets.alphaVantage_apikey }}
-        git add .
+      - name: Fetch JSON
+        run: |
+          curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SIVR&apikey=${{ secrets.alphaVantage_apikey }}
+          curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGOL&apikey=${{ secrets.alphaVantage_apikey }}
+          git add .
 
-    - name: Commit and Push
-      run: |
-        git commit -m "Update JSON data [skip ci]"
-        git push
+      - name: Commit and Push
+        run: |
+          git commit -m "Update JSON data [skip ci]"
+          git push
