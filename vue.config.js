@@ -1,11 +1,11 @@
-import path from 'path';
-import { readFileSync } from 'fs';
+const path = require('path');
+const fs = require('fs');
 
-const { name } = JSON.parse(readFileSync(path.resolve('./package.json')));
+const { name } = JSON.parse(fs.readFileSync(path.resolve('./package.json')));
 
 const basePath = process.env.NODE_ENV === 'production' ? `/${name}/` : '/';
 
-export default {
+module.exports = {
   // baseUrl: basePath,
   publicPath: basePath,
   chainWebpack: (config) => {
