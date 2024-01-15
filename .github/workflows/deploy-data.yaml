@@ -24,6 +24,8 @@ jobs:
           curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SIVR&apikey=${{ secrets.alphaVantage_apikey }}
           curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGOL&apikey=${{ secrets.alphaVantage_apikey }}
           git add .
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Commit and Push
         run: |
