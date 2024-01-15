@@ -16,7 +16,7 @@ export default {
         lib.tickerConfig.forEach((configObj) => {
             self.loading.push(true);
 
-            axios.get(`data/${configObj.symbol}.json`, { baseURL: window.location.origin })
+            axios.get(`data/${configObj.symbol}.json`, { baseURL: window.location.href })
                 .then((resp) => {
                     self[`${configObj.data}_ohlcv`] = lib.daily2ohlcv(resp.data)
                 
