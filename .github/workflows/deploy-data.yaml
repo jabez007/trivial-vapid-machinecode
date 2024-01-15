@@ -21,8 +21,8 @@ jobs:
 
       - name: Fetch JSON
         run: |
-          curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SIVR&apikey=${{ secrets.alphaVantage_apikey }}
-          curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGOL&apikey=${{ secrets.alphaVantage_apikey }}
+          curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SIVR&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}
+          curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGOL&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}
 
       - name: Commit and Push
         run: |
