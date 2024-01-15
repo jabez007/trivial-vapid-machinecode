@@ -22,13 +22,13 @@ jobs:
       - name: Fetch JSON
         run: |
           curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SIVR&apikey=${{ secrets.alphaVantage_apikey }}
-          git add data/SIVR.json
           curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGOL&apikey=${{ secrets.alphaVantage_apikey }}
-          git add data/SGOL.json
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Commit and Push
         run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add data/SIVR.json
+          git add data/SGOL.json
           git commit -m "Update JSON data [skip ci]"
           git push
