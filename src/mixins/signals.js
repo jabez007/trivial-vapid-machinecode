@@ -42,11 +42,8 @@ export default {
                         return (
                             lastSell >= lastBuy // we're not currently bought in
                             &&
-                            ( // https://www.tradingview.com/script/127zASU6-JBravo-Swing/
-                                Math.min(d[1], d[4]) > (onChart9sma[(indx - sma9offset)] || [0, 0])[1] // buy signal from Bravo9
-                                &&
-                                d[4] - (onChart20ema[(indx - ema20offset)] || [0, 0])[1] > 0
-                            )
+                            // https://www.tradingview.com/script/127zASU6-JBravo-Swing/
+                            Math.min(d[1], d[4]) > (onChart9sma[(indx - sma9offset)] || [0, 0])[1] // Full candle above 9SMA - buy signal from Bravo9
                             &&
                             ( // positive cross on the MACD
                                 (offChartMacd[(indx - macdOffset)] || [0, 0, 0, 0])[1] >= 0.001
@@ -58,8 +55,23 @@ export default {
                         : (
                             lastBuy > lastSell // we are currently bought in
                             &&
-                            ( // paper hands
-                                d[4] - (onChart20ema[(indx - ema20offset)] || [0, 0])[1] <= -0.01 // sell signal from Bravo9
+                            ( // paper 
+                                ( // sell signals from Bravo9
+                                    Math.max(d[1], d[4]) < (onChart9sma[(indx - sma9offset)] || [0, 0])[1] // Full candle below 9SMA 
+                                    ||
+                                    ( // Bearish candle closes below 20EMA
+                                        d[4] - d[1] <= -0.01
+                                        &&
+                                        d[4] - (onChart20ema[(indx - ema20offset)] || [0, 0])[1] <= -0.01 
+                                    )
+                                )
+                                ||
+                                ( // sell signal from Accurate Swing Trading System
+                                    /*
+                                     * Close below the lowest low of the last 3 days
+                                     */
+                                    d[4] - Math.min(...ohlcv.slice(Math.max(0, (indx - 3)), indx).map(s => s[3])) <= -0.01
+                                )
                                 ||
                                 // trend exhausted
                                 currUpCount === 9
