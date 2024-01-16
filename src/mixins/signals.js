@@ -23,14 +23,16 @@ export default {
                     const onChart9sma = (self[`${configObj.data}_onchart`].find((oc) => oc.name === "SMA, 9")).data
                     const sma9offset = ohlcv.length - onChart9sma.length
 
-                    const onChart9upCount = (self[`${configObj.data}_onchart`].find((oc) => oc.name === "TD 9 Count Up")).data
+                    //const onChart9upCount = (self[`${configObj.data}_onchart`].find((oc) => oc.name === "TD 9 Count Up")).data
                     
                     const offChartMacd = (self[`${configObj.data}_offchart`].find((oc) => oc.type === "MACD")).data
                     const macdOffset = ohlcv.length - offChartMacd.length
                     
+                    const offChartRsi = (self[`${configObj.data}_offchart`].find((oc) => oc.type === "RSI")).data
+                    const rsiOffset = ohlcv.length - offChartRsi.length
+                    
                     function calculateSignal(spltrs, d, indx) {
-                        //console.log(`day date: ${new Date(d[0])}`)
-                        const currUpCount = ((onChart9upCount.filter((count) => count[0] === d[0]))[0] || [d[0], { text: 0 }])[1].text
+                        //const currUpCount = ((onChart9upCount.filter((count) => count[0] === d[0]))[0] || [d[0], { text: 0 }])[1].text
                         
                         const typicalPrice = d.slice(2, 5).reduce((a, b) => a + b) / 3
                         
@@ -50,6 +52,12 @@ export default {
                                 &&
                                 (offChartMacd[(indx - macdOffset) - 1] || [0, 0, 0, 0])[1] < (offChartMacd[(indx - macdOffset)] || [0, 0, 0, 0])[1]
                             )
+                            &&
+                            ( // rising from oversold
+                                (offChartRsi[(indx - rsiOffset)] || [0, 0])[1] > 40
+                                &&
+                                Math.min(...offChartRsi.slice(Math.max(0, (indx - rsiOffset) - 3), (indx - rsiOffset)).map(s => s[1])) < 40
+                            )
                         )
                         ? "BUY"
                         : (
@@ -66,15 +74,11 @@ export default {
                                     )
                                 )
                                 ||
-                                ( // sell signal from Accurate Swing Trading System
-                                    /*
-                                     * Close below the lowest low of the last 3 days
-                                     */
-                                    d[4] - Math.min(...ohlcv.slice(Math.max(0, (indx - 3)), indx).map(s => s[3])) <= -0.01
-                                )
-                                ||
-                                // trend exhausted
-                                currUpCount === 9
+                                /*
+                                 * Sell signal from Accurate Swing Trading System
+                                 * Close below the lowest low of the last 3 days
+                                 */
+                                d[4] - Math.min(...ohlcv.slice(Math.max(0, (indx - 3)), indx).map(s => s[3])) <= -0.01
                                 ||
                                 (
                                     ( // negative cross on the MACD
