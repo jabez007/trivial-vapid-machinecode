@@ -2,7 +2,7 @@ name: Fetch and Commit JSON
 
 on:
   schedule:
-    - cron: '0 0 * * TUE-SAT'  # At 12:00 AM, Tuesday through Saturday
+    - cron: '15 * * * *'  #
   push:
     branches:
       - 'dist'
