@@ -21,11 +21,13 @@ jobs:
 
       - name: Fetch SIVR JSON
         run: |
-          while true; do
+          retries=0
+          while [ $retries -lt 10 ]; do
             JSON=$(curl -sS https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SIVR\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }})
             if echo "$JSON" | jq -e 'has("Error Message")' >/dev/null; then
               echo "Error message found in JSON. Retrying..."
               sleep 30
+              retries=$((retries+1))
             else
               echo "$JSON" > data/SIVR.json
               break
@@ -34,11 +36,13 @@ jobs:
 
       - name: Fetch SGOL JSON
         run: |
-          while true; do
+          retries=0
+          while [ $retries -lt 10 ]; do
             JSON=$(curl -sS https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SGOL\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }})
             if echo "$JSON" | jq -e 'has("Error Message")' >/dev/null; then
               echo "Error message found in JSON. Retrying..."
               sleep 30
+              retries=$((retries+1))
             else
               echo "$JSON" > data/SGOL.json
               break
