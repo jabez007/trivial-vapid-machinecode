@@ -19,10 +19,31 @@ jobs:
           ref: dist
           fetch-depth: 0
 
-      - name: Fetch JSON
+      - name: Fetch SIVR JSON
         run: |
-          curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SIVR\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}
-          curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SGOL\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}
+          # curl -o data/SIVR.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SIVR\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}
+          while ! JSON=$(curl -sS https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SIVR\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}); do
+            if echo "$JSON" | jq -e 'has("Error Message")' >/dev/null; then
+              echo "Error message found in JSON. Retrying..."
+              sleep 30  # Wait for 30 seconds before retrying
+            else
+              echo "$JSON" > data/SIVR.json
+              break
+            fi
+          done
+
+      - name: Fetch SGOL JSON
+        run: |
+          # curl -o data/SGOL.json https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SGOL\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}
+          while ! JSON=$(curl -sS https://www.alphavantage.co/query?function=TIME_SERIES_DAILY\&symbol=SGOL\&outputsize=full\&apikey=${{ secrets.ALPHAVANTAGE_APIKEY }}); do
+            if echo "$JSON" | jq -e 'has("Error Message")' >/dev/null; then
+              echo "Error message found in JSON. Retrying..."
+              sleep 30  # Wait for 30 seconds before retrying
+            else
+              echo "$JSON" > data/SGOL.json
+              break
+            fi
+          done
 
       - name: Commit and Push
         run: |
