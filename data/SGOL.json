@@ -2,15 +2,22 @@
     "Meta Data": {
         "1. Information": "Daily Prices (open, high, low, close) and Volumes",
         "2. Symbol": "SGOL",
-        "3. Last Refreshed": "2025-03-10",
+        "3. Last Refreshed": "2025-03-11",
         "4. Output Size": "Full size",
         "5. Time Zone": "US/Eastern"
     },
     "Time Series (Daily)": {
+        "2025-03-11": {
+            "1. open": "27.7800",
+            "2. high": "27.8999",
+            "3. low": "27.7750",
+            "4. close": "27.8500",
+            "5. volume": "3716563"
+        },
         "2025-03-10": {
             "1. open": "27.7000",
             "2. high": "27.7700",
-            "3. low": "27.4847",
+            "3. low": "27.4800",
             "4. close": "27.5200",
             "5. volume": "6571382"
         },
