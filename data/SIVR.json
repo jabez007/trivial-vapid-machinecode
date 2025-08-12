@@ -2,17 +2,24 @@
     "Meta Data": {
         "1. Information": "Daily Prices (open, high, low, close) and Volumes",
         "2. Symbol": "SIVR",
-        "3. Last Refreshed": "2025-08-11",
+        "3. Last Refreshed": "2025-08-12",
         "4. Output Size": "Full size",
         "5. Time Zone": "US/Eastern"
     },
     "Time Series (Daily)": {
+        "2025-08-12": {
+            "1. open": "35.9300",
+            "2. high": "36.2200",
+            "3. low": "35.8000",
+            "4. close": "36.1100",
+            "5. volume": "519847"
+        },
         "2025-08-11": {
             "1. open": "36.0500",
             "2. high": "36.1300",
             "3. low": "35.8700",
             "4. close": "35.8800",
-            "5. volume": "695600"
+            "5. volume": "700174"
         },
         "2025-08-08": {
             "1. open": "36.4900",
